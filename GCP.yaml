@@ -1,0 +1,54 @@
+global:
+  name: consul
+  image: 'hashicorp/consul-enterprise:1.10.2-ent'
+  datacenter: GCP
+  tls:
+    enabled: true
+    caCert:
+      secretName: consul-ca-cert
+      secretKey: ca.crt
+    caKey:
+      secretName: consul-ca-key
+      secretKey: ca.key
+  acls:
+    manageSystemACLs: true
+    replicationToken:
+      secretName: consul-acl-replication-acl-token
+      secretKey: token
+  gossipEncryption:
+    secretName: consul-gossip-encryption-key
+    secretKey: key
+  federation:
+    enabled: true
+meshGateway:
+  enabled: true
+  wanAddress:
+    useLoadBalancerEndpoint: true
+  replicas: 1
+  service: 
+    enabled: true 
+    type: LoadBalancer 
+   #service:
+    #annotations: |
+    #  networking.gke.io/load-balancer-type: "Internal".
+connectInject:
+  enabled: true
+  default: true
+controller:
+  enabled: true
+server:
+  enterpriseLicense:
+    secretName: consul-enterprise-license
+    secretKey: license
+  #3 is default
+  replicas: 3
+  extraConfig: |
+    {
+      "primary_datacenter": "Azure",
+      "primary_gateways": ["20.99.137.214:443"]
+    }
+
+terminatingGateways:
+  enabled: true
+  gateways:
+  - name: gcp-terminating-gateway
