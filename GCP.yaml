@@ -5,25 +5,23 @@ global:
   tls:
     enabled: true
     caCert:
-      secretName: consul-ca-cert
-      secretKey: tls.crt
+      secretName: consul-federation
+      secretKey: caCert
     caKey:
-      secretName: consul-ca-key
-      secretKey: tls.key
+      secretName: consul-federation
+      secretKey: caKey
   acls:
     manageSystemACLs: true
     replicationToken:
-      secretName: consul-acl-replication-acl-token
-      secretKey: token
+      secretName: consul-federation
+      secretKey: replicationToken
   gossipEncryption:
-    secretName: consul-gossip-encryption-key
-    secretKey: key
+    secretName: consul-federation
+    secretKey: gossipEncryptionKey
   federation:
     enabled: true
 meshGateway:
   enabled: true
-  wanAddress:
-    useLoadBalancerEndpoint: true
   replicas: 1
   service: 
     enabled: true 
@@ -42,11 +40,13 @@ server:
     secretKey: license
   #3 is default
   replicas: 3
-  extraConfig: |
-    {
-      "primary_datacenter": "Azure",
-      "primary_gateways": ["20.99.137.214:443"]
-    }
+  extraVolumes:
+    - type: secret
+      name: consul-federation
+      items:
+        - key: serverConfigJSON
+          path: config.json
+      load: true
 
 terminatingGateways:
   enabled: true
