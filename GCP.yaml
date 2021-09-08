@@ -6,10 +6,10 @@ global:
     enabled: true
     caCert:
       secretName: consul-ca-cert
-      secretKey: ca.crt
+      secretKey: tls.crt
     caKey:
       secretName: consul-ca-key
-      secretKey: ca.key
+      secretKey: tls.key
   acls:
     manageSystemACLs: true
     replicationToken:
