@@ -1,6 +1,6 @@
 global:
   name: consul
-  image: 'hashicorp/consul-enterprise:1.10.2-ent'
+  image: 'hashicorp/consul-enterprise:1.10.0-ent'
   datacenter: GCP
   tls:
     enabled: true
