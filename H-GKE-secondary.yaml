@@ -1,0 +1,53 @@
+global:
+  name: consul
+  image: 'hashicorp/consul-enterprise:1.10.0-ent'
+  datacenter: gcp-secondary
+  tls:
+    enabled: true
+    caCert:
+      secretName: consul-federation
+      secretKey: caCert
+    caKey:
+      secretName: consul-federation
+      secretKey: caKey
+  acls:
+    manageSystemACLs: true
+    replicationToken:
+      secretName: consul-federation
+      secretKey: replicationToken
+  gossipEncryption:
+    secretName: consul-federation
+    secretKey: gossipEncryptionKey
+  federation:
+    enabled: true
+meshGateway:
+  enabled: true
+  replicas: 1
+  service:
+    enabled: true
+    type: LoadBalancer
+    annotations: |
+      "service.beta.kubernetes.io/azure-load-balancer-internal": "true"
+connectInject:
+  enabled: true
+  default: true
+controller:
+  enabled: true
+server:
+  enterpriseLicense:
+    secretName: consul-enterprise-license
+    secretKey: license
+  #3 is default
+  replicas: 3
+  extraVolumes:
+    - type: secret
+      name: consul-federation
+      items:
+        - key: serverConfigJSON
+          path: config.json
+      load: true
+
+terminatingGateways:
+  enabled: true
+  gateways:
+  - name: gke-terminating-gateway

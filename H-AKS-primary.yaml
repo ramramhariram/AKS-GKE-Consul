@@ -1,0 +1,42 @@
+global:
+  name: consul
+  image: 'hashicorp/consul-enterprise:1.10.0-ent'
+  datacenter: Azure-Primary
+  tls:
+    enabled: true
+  federation:
+    enabled: true
+    createFederationSecret: true
+  acls:
+    manageSystemACLs: true
+    createReplicationToken: true
+  gossipEncryption:
+    secretName: consul-gossip-encryption-key
+    secretKey: key
+meshGateway:
+  enabled: true
+  replicas: 1
+  service:
+    enabled: true
+    type: LoadBalancer
+    annotations: |
+      "service.beta.kubernetes.io/azure-load-balancer-internal": "true"
+connectInject:
+  enabled: true
+  default: true
+controller:
+  enabled: true
+server:
+  enterpriseLicense:
+    secretName: consul-enterprise-license
+    secretKey: license
+  #3 is default
+  replicas: 3
+terminatingGateways:
+  enabled: true
+  gateways:
+  - name: default-gateway
+ui:
+  service:
+    type: "LoadBalancer"
+
