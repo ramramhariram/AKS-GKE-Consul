@@ -27,7 +27,7 @@ meshGateway:
     enabled: true
     type: LoadBalancer
     annotations: |
-      "service.beta.kubernetes.io/azure-load-balancer-internal": "true"
+      "cloud.google.com/load-balancer-type": "Internal"
 connectInject:
   enabled: true
   default: true
