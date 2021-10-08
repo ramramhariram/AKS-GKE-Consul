@@ -27,7 +27,7 @@ meshGateway:
     enabled: true
     type: LoadBalancer
     annotations: |
-      "cloud.google.com/load-balancer-type": "Internal"
+      networking.gke.io/load-balancer-type: "Internal"
 connectInject:
   enabled: true
   default: true
